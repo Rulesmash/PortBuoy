@@ -38,11 +38,10 @@ slotSchema.methods.hasCapacity = function () {
 };
 
 // Auto update congestion score before save
-slotSchema.pre('save', function (next) {
+slotSchema.pre('save', function () {
     if (this.maxTrucks > 0) {
         this.congestionScore = this.bookedCount / this.maxTrucks;
     }
-    next();
 });
 
 const Slot = mongoose.model('Slot', slotSchema);

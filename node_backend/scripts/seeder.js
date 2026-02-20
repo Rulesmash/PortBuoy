@@ -13,15 +13,9 @@ const Booking = require('../src/models/Booking');
 const VesselSchedule = require('../src/models/VesselSchedule');
 const EmissionRecord = require('../src/models/EmissionRecord');
 
-// Connect to DB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portbuoy', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-const seedData = async () => {
+const seedData = async (shouldExit = true) => {
     try {
-        console.log('Clearing database...');
+        console.log('Clearing database for seeding...');
         await User.deleteMany();
         await Truck.deleteMany();
         await Slot.deleteMany();
@@ -117,11 +111,17 @@ const seedData = async () => {
         }
 
         console.log('Seeding Success!');
-        process.exit();
+        if (shouldExit) process.exit();
     } catch (err) {
         console.error(err);
-        process.exit(1);
+        if (shouldExit) process.exit(1);
     }
 }
 
-seedData();
+// If run directly via node scripts/seeder.js
+if (require.main === module) {
+    mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portbuoy')
+        .then(() => seedData(true));
+}
+
+module.exports = { seedData };
