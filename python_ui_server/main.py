@@ -5,10 +5,12 @@ from fastapi.staticfiles import StaticFiles
 import os
 
 app = FastAPI(title="PortBuoy Backend")
+from pathlib import Path
 
 # Setup templates directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "frontend", "templates"))
+BASE_DIR = Path(__file__).resolve().parent
+templates_path = BASE_DIR / "frontend" / "templates"
+templates = Jinja2Templates(directory=str(templates_path))
 
 @app.get("/", response_class=HTMLResponse)
 async def read_index(request: Request):
