@@ -63,7 +63,22 @@ uvicorn main:app --reload
 
 ---
 
-## 🔧 Tech Stack Deep Dive
+## � Production Deployment (Docker)
+
+If you have Docker and Docker Compose installed, deploying the entire multi-instance application takes a single command from the project root directory:
+
+```bash
+docker-compose up -d --build
+```
+This single command builds and spins up:
+1. The **Node.js Express API** at `http://localhost:5000`
+2. The **Python FastAPI UI** at `http://localhost:8000`
+
+It automatically points to the cloud MongoDB Atlas database without any additional config required.
+
+---
+
+## �🔧 Tech Stack Deep Dive
 * **Language Ecosystems**: JavaScript (Backend Logic) & Python (UI Logic)
 * **Database**: MongoDB Atlas (Mongoose ODM)
 * **Web Frameworks**: Express.js (REST) & FastAPI (Jinja Template Rendering)

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # The Node.js Core API Backend
+  node_api:
+    build:
+      context: ./node_api
+      dockerfile: Dockerfile
+    container_name: portbuoy-node-api
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      # Connects to your pre-existing MongoDB Atlas Cloud DB automatically
+      - MONGODB_URI=mongodb://Rules:123455@ac-hitcjms-shard-00-00.jkhaljy.mongodb.net:27017,ac-hitcjms-shard-00-01.jkhaljy.mongodb.net:27017,ac-hitcjms-shard-00-02.jkhaljy.mongodb.net:27017/portbuoy?ssl=true&authSource=admin&replicaSet=atlas-nh243g-shard-0&retryWrites=true&w=majority&appName=Cluster0
+      - JWT_SECRET=supersecretportbuoykey2024
+      - JWT_EXPIRE=30d
+    restart: unless-stopped
+
+  # The Python UI Server (FastAPI Template Renderer)
+  python_ui_server:
+    build:
+      context: ./python_ui_server
+      dockerfile: Dockerfile
+    container_name: portbuoy-python-ui
+    ports:
+      - "8000:8000"
+    depends_on:
+      - node_api
+    restart: unless-stopped
+
+# No local MongoDB container needed, uses Cloud Atlas URI natively
