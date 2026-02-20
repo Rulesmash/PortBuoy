@@ -78,7 +78,25 @@ It automatically points to the cloud MongoDB Atlas database without any addition
 
 ---
 
-## �🔧 Tech Stack Deep Dive
+## 🚂 Railway Deployment (Cloud Hosting)
+
+PortBuoy is natively configured to deploy effortlessly on [Railway.app](https://railway.app/) using its Monorepo deployment feature.
+
+1. **Connect GitHub**: Create a new project on Railway and deploy from your GitHub repository.
+2. **Deploy the Node API**:
+   - In the new Railway service settings, change the **Root Directory** to `/node_api`.
+   - Add the environment variables from your `.env` string (specifically `MONGODB_URI` and `JWT_SECRET`).
+   - Railway will automatically detect the Dockerfile, build it, and assign a public URL to your API.
+3. **Deploy the Python UI**:
+   - Click "New Service" -> "GitHub Repo" -> Select the SAME repository again.
+   - In this second service's settings, change the **Root Directory** to `/python_ui_server`.
+   - Railway will dynamically inject its `$PORT` into the `uvicorn` startup sequence and assign a public URL to your UI!
+
+*Both services are now public and seamlessly interacting!*
+
+---
+
+## 🔧 Tech Stack Deep Dive
 * **Language Ecosystems**: JavaScript (Backend Logic) & Python (UI Logic)
 * **Database**: MongoDB Atlas (Mongoose ODM)
 * **Web Frameworks**: Express.js (REST) & FastAPI (Jinja Template Rendering)
