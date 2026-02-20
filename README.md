@@ -82,15 +82,21 @@ It automatically points to the cloud MongoDB Atlas database without any addition
 
 PortBuoy is natively configured to deploy effortlessly on [Railway.app](https://railway.app/) using its Monorepo deployment feature.
 
-1. **Connect GitHub**: Create a new project on Railway and deploy from your GitHub repository.
-2. **Deploy the Node API**:
-   - In the new Railway service settings, change the **Root Directory** to `/node_api`.
-   - Add the environment variables from your `.env` string (specifically `MONGODB_URI` and `JWT_SECRET`).
-   - Railway will automatically detect the Dockerfile, build it, and assign a public URL to your API.
-3. **Deploy the Python UI**:
-   - Click "New Service" -> "GitHub Repo" -> Select the SAME repository again.
-   - In this second service's settings, change the **Root Directory** to `/python_ui_server`.
-   - Railway will dynamically inject its `$PORT` into the `uvicorn` startup sequence and assign a public URL to your UI!
+> [!WARNING]
+> **CRITICAL HACKATHON STEP**: Because this project uses a multi-service architecture (a `node_api` folder and a `python_ui_server` folder), you **MUST** configure the "Root Directory" in Railway for each service, otherwise Docker will fail to find `package.json` or `requirements.txt`.
+
+### 1. Deploy the Node API:
+- Create a New Project -> Deploy from your GitHub Repository.
+- Go to the new Railway service **Settings** -> **Build** section.
+- Change the **Root Directory** from `/` to `/node_api`.
+- Add your environment variables (like `MONGODB_URI`).
+- Railway will automatically detect the Node API Dockerfile and build it.
+
+### 2. Deploy the Python UI:
+- Click "New Service" -> "GitHub Repo" -> Select the SAME repository again.
+- Go to this second service's **Settings** -> **Build** section.
+- Change the **Root Directory** from `/` to `/python_ui_server`.
+- Railway will dynamically inject its `$PORT` into the python build sequence and host it.
 
 *Both services are now public and seamlessly interacting!*
 
