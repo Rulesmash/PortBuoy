@@ -7,10 +7,16 @@ import os
 app = FastAPI(title="PortBuoy Backend")
 from pathlib import Path
 
-# Setup templates directory
-BASE_DIR = Path(__file__).resolve().parent
-templates_path = BASE_DIR / "frontend" / "templates"
-templates = Jinja2Templates(directory=str(templates_path))
+import os
+
+# Ensure the template path works whether run locally or inside Docker's /app workdir
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "frontend", "templates")
+if not os.path.exists(TEMPLATE_DIR):
+    TEMPLATE_DIR = "/app/frontend/templates" # Docker absolute fallback
+
+print(f"Loading templates from: {TEMPLATE_DIR}")
+templates = Jinja2Templates(directory=TEMPLATE_DIR)
 
 @app.get("/", response_class=HTMLResponse)
 async def read_index(request: Request):
