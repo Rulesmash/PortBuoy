@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Driver Portal &amp; Digital Pass</title>
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c77400",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#231b0f",
+                        "surface-dark": "#2c2214", // Slightly lighter than background-dark for cards
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* QR Code Pattern - Simplified CSS representation */
+        .qr-pattern {
+            background-color: #ffffff;
+            background-image: linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+                linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display antialiased selection:bg-primary selection:text-white">
+    <!-- Background Decoration for Desktop (blurred warehouse vibe) -->
+    <div class="fixed inset-0 z-0 opacity-20 pointer-events-none" data-alt="Blurred warehouse background image"
+        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYBaHW1nGY5_RfwMsQV6F5nSBmJPsCamShMzxhMsw9rOf75NRMOWN18XJVRWxgWVO8stXAE8cQlCiWfS4jTwg1s24fQKvnsuiIYv7RWeR-bT3KMfiefxXIt0AsTKAxvIem1yP6NHJwhK29AKpOLvkhE8vwxuigwIA2bJ1sdaPWVKdCt8PcV6J3aIJYYJQAcalVoiR8Tfs9ocjOpXSfIVveVy0w1guUFkyxYcNA7NfRewdRul36zjYCBQaOGyfDSXj3fdpM4J6NiT-3'); background-size: cover; background-position: center; filter: blur(8px);">
+    </div>
+    <!-- Main Mobile Container -->
+    <main
+        class="relative z-10 w-full max-w-md mx-auto min-h-screen flex flex-col bg-background-dark shadow-2xl border-x border-[#3a3227]">
+        <!-- Header -->
+        <header
+            class="sticky top-0 z-30 flex items-center justify-between border-b border-[#3a3227] bg-background-dark/95 backdrop-blur-sm px-5 py-4">
+            <div class="flex items-center gap-3">
+                <div class="size-8 rounded bg-primary/20 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-xl">local_shipping</span>
+                </div>
+                <h1 class="text-white text-lg font-bold tracking-tight">Driver Portal</h1>
+            </div>
+            <div class="flex gap-3">
+                <button
+                    class="flex items-center justify-center size-10 rounded-lg bg-[#3a3227] hover:bg-[#4a4033] transition-colors text-white relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-2 right-2 size-2 bg-primary rounded-full"></span>
+                </button>
+                <button
+                    class="flex items-center justify-center size-10 rounded-lg bg-[#3a3227] hover:bg-[#4a4033] transition-colors text-white"
+                    onclick="window.location.href='/login'">
+                    <span class="material-symbols-outlined">logout</span>
+                </button>
+            </div>
+        </header>
+        <!-- Content Scroll Area -->
+        <div class="flex-1 overflow-y-auto p-5 flex flex-col gap-6">
+            <!-- Gate Pass / QR Section -->
+            <section class="flex flex-col gap-4">
+                <div class="flex items-center justify-between px-1">
+                    <h2 class="text-white text-xl font-bold">Digital Gate Pass</h2>
+                    <span
+                        class="text-sm font-medium text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full flex items-center gap-1">
+                        <span class="size-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                        Active
+                    </span>
+                </div>
+                <div
+                    class="bg-surface-dark rounded-xl p-6 border border-[#3a3227] shadow-lg relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-orange-400 to-primary">
+                    </div>
+                    <div class="flex flex-col items-center gap-5">
+                        <div class="text-center space-y-1">
+                            <p class="text-slate-400 text-sm uppercase tracking-wider font-semibold">Scan at Gate 4</p>
+                            <h3 class="text-white text-2xl font-bold tracking-tight">#8829-L</h3>
+                        </div>
+                        <!-- QR Code Container -->
+                        <div
+                            class="bg-white p-3 rounded-xl shadow-inner w-48 h-48 flex items-center justify-center relative">
+                            <!-- Simulated QR code using CSS pattern for simplicity/robustness without external image deps -->
+                            <div class="w-full h-full qr-pattern opacity-90"></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="bg-white p-1 rounded">
+                                    <span class="material-symbols-outlined text-black text-4xl">qr_code_2</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between w-full pt-2 border-t border-[#3a3227]">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-slate-400">Driver</span>
+                                <span class="text-white font-medium">Michael R.</span>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <span class="text-xs text-slate-400">Vehicle ID</span>
+                                <span class="text-white font-medium">TRK-9021</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Live Status Dashboard -->
+            <section class="grid grid-cols-2 gap-4">
+                <div class="bg-surface-dark rounded-xl p-4 border border-[#3a3227] flex flex-col justify-between gap-2">
+                    <div class="flex items-start justify-between">
+                        <span class="text-slate-400 text-sm font-medium">Arrival Window</span>
+                        <span class="material-symbols-outlined text-primary text-xl">schedule</span>
+                    </div>
+                    <div>
+                        <p class="text-white text-lg font-bold">08:00 - 08:30</p>
+                        <p class="text-emerald-500 text-sm font-medium flex items-center gap-1 mt-1">
+                            <span class="material-symbols-outlined text-sm">check_circle</span>
+                            On Time
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-surface-dark rounded-xl p-4 border border-[#3a3227] flex flex-col justify-between gap-2">
+                    <div class="flex items-start justify-between">
+                        <span class="text-slate-400 text-sm font-medium">Gate Traffic</span>
+                        <span class="material-symbols-outlined text-primary text-xl">traffic</span>
+                    </div>
+                    <div>
+                        <p class="text-white text-lg font-bold">Low Traffic</p>
+                        <div class="w-full bg-[#3a3227] h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div class="bg-emerald-500 w-1/4 h-full rounded-full"></div>
+                        </div>
+                        <p class="text-slate-400 text-xs mt-1">~5 min wait</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Map & Route Widget -->
+            <section class="bg-surface-dark rounded-xl overflow-hidden border border-[#3a3227] flex flex-col">
+                <div class="relative h-40 bg-slate-800 w-full group">
+                    <!-- Map Background Image -->
+                    <div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay"
+                        data-alt="Dark map interface showing city streets" data-location="Map View"
+                        style="background-image: url('https://placeholder.pics/svg/300');">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent"></div>
+                    <!-- Distance Overlay -->
+                    <div
+                        class="absolute top-4 left-4 bg-background-dark/90 backdrop-blur px-3 py-1.5 rounded-lg border border-[#3a3227] flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-sm">near_me</span>
+                        <span class="text-white text-sm font-bold">2.4 miles to gate</span>
+                    </div>
+                    <!-- Navigation Icon -->
+                    <div class="absolute bottom-4 right-4 bg-primary text-white p-2 rounded-full shadow-lg">
+                        <span class="material-symbols-outlined">navigation</span>
+                    </div>
+                </div>
+                <div class="p-4 flex items-center justify-between">
+                    <div>
+                        <p class="text-slate-400 text-xs uppercase font-bold tracking-wider">Next Waypoint</p>
+                        <p class="text-white font-medium">Logistics Blvd, Gate 4 Entry</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-white text-xl font-bold font-mono">12<span
+                                class="text-sm align-top text-slate-400 font-normal">min</span></p>
+                    </div>
+                </div>
+            </section>
+            <!-- Action Buttons Grid -->
+            <section class="grid grid-cols-2 gap-4">
+                <button
+                    class="flex flex-col items-center justify-center gap-3 p-5 rounded-xl bg-surface-dark border border-[#3a3227] hover:bg-[#3a3227] active:border-primary transition-all group"
+                    onclick="alert('Delay reported effectively.')">
+                    <div
+                        class="size-12 rounded-full bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
+                        <span class="material-symbols-outlined text-red-500 text-2xl">report_problem</span>
+                    </div>
+                    <span class="text-white font-semibold">Report Delay</span>
+                </button>
+                <button
+                    class="flex flex-col items-center justify-center gap-3 p-5 rounded-xl bg-primary hover:bg-orange-600 active:bg-orange-700 transition-all text-white shadow-lg shadow-orange-900/20"
+                    onclick="alert('Opening navigation map.')">
+                    <div class="size-12 rounded-full bg-white/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-2xl">map</span>
+                    </div>
+                    <span class="text-white font-semibold">View Route</span>
+                </button>
+            </section>
+            <!-- Recent Activity -->
+            <section class="pt-2 pb-6">
+                <h3 class="text-slate-400 text-sm font-semibold mb-3 px-1">Recent Activity</h3>
+                <div class="flex flex-col gap-2">
+                    <!-- Item 1 -->
+                    <div
+                        class="flex items-center justify-between p-3 rounded-lg bg-surface-dark/50 border border-[#3a3227]/50">
+                        <div class="flex items-center gap-3">
+                            <div class="size-8 rounded bg-slate-800 flex items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined text-sm">history</span>
+                            </div>
+                            <div>
+                                <p class="text-white text-sm font-medium">Gate 2 Entry</p>
+                                <p class="text-slate-500 text-xs">Yesterday, 14:20</p>
+                            </div>
+                        </div>
+                        <span
+                            class="text-xs text-emerald-500 font-medium bg-emerald-500/10 px-2 py-1 rounded">Completed</span>
+                    </div>
+                    <!-- Item 2 -->
+                    <div
+                        class="flex items-center justify-between p-3 rounded-lg bg-surface-dark/50 border border-[#3a3227]/50">
+                        <div class="flex items-center gap-3">
+                            <div class="size-8 rounded bg-slate-800 flex items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined text-sm">assignment</span>
+                            </div>
+                            <div>
+                                <p class="text-white text-sm font-medium">Document Upload</p>
+                                <p class="text-slate-500 text-xs">Yesterday, 09:15</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">View</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

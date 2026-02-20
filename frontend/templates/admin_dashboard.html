@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Logistics Dashboard</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c77400",
+                        "primary-hover": "#a66100",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#181510",
+                        "surface-dark": "#231b0f",
+                        "surface-light": "#ffffff",
+                        "border-dark": "#3a3227",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #181510;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3a3227;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c77400;
+        }
+
+        .chart-grid {
+            background-image: linear-gradient(#3a3227 1px, transparent 1px), linear-gradient(90deg, #3a3227 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display antialiased overflow-hidden">
+    <div class="flex h-screen w-full">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 h-full border-r border-border-dark bg-background-dark flex-shrink-0">
+            <div class="p-6 flex items-center gap-3">
+                <div
+                    class="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-orange-900 flex items-center justify-center shadow-lg shadow-orange-900/20">
+                    <span class="material-symbols-outlined text-white">anchor</span>
+                </div>
+                <div>
+                    <h1 class="text-white text-base font-bold leading-tight tracking-wide">PORT LOGISTICS</h1>
+                    <p class="text-slate-400 text-xs font-medium">Admin Console</p>
+                </div>
+            </div>
+            <nav class="flex-1 px-4 py-4 flex flex-col gap-2 overflow-y-auto">
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/20 border border-primary/30 text-primary group transition-all"
+                    href="/admin">
+                    <span class="material-symbols-outlined filled-icon">dashboard</span>
+                    <span class="text-sm font-semibold">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-surface-dark transition-all group"
+                    href="/booking">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors">local_shipping</span>
+                    <span class="text-sm font-medium">Fleet Management</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-surface-dark transition-all group"
+                    href="/esg">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">analytics</span>
+                    <span class="text-sm font-medium">Analytics</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-surface-dark transition-all group"
+                    href="/driver">
+                    <span
+                        class="material-symbols-outlined group-hover:text-primary transition-colors">description</span>
+                    <span class="text-sm font-medium">Reports</span>
+                </a>
+                <div class="my-4 h-px bg-border-dark w-full"></div>
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">System</p>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-surface-dark transition-all group"
+                    href="/admin">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                    <span class="text-sm font-medium">Settings</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-surface-dark transition-all group"
+                    href="/admin">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">security</span>
+                    <span class="text-sm font-medium">Access Control</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-border-dark">
+                <div class="flex items-center gap-3 p-3 rounded-lg bg-surface-dark border border-border-dark">
+                    <div class="relative">
+                        <div class="h-10 w-10 rounded-full bg-slate-700 bg-cover bg-center"
+                            data-alt="Profile picture of logged in admin user"
+                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAO8c6Dr7GijjuUUmjgsFFIKgRIMCsdHeGaNu3Nx-JhPGH_yobLr2FpivVAnE59prGdY519OexAwqJADVCAcBGnodRKF6gRBBd7FfmLN43KTvlzQ8Tqe6w9-mUN7lJOLPFvMMCXxFgLiBOHZ20tXA1zdH2_n8xHwMSzVLF777wlG5SG_7i9iTW-cr2G48c4mghSCFUjXQDvlnrZ1NEb9yiKUHX7TSeXorPNsJgMH1QG1E8Aa1O04mjuXVXOMd9LuZyolbPExLob-Zda');">
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-surface-dark">
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-white truncate">Alex Morgan</p>
+                        <p class="text-xs text-slate-400 truncate">Senior Admin</p>
+                    </div>
+                    <button class="text-slate-400 hover:text-white" onclick="window.location.href='/login'">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-full min-w-0 bg-[#120f0b]">
+            <!-- Header -->
+            <header
+                class="h-16 border-b border-border-dark bg-background-dark/50 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-20">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-slate-400 hover:text-white">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="flex items-center text-sm text-slate-400">
+                        <span class="hover:text-white cursor-pointer">Home</span>
+                        <span class="material-symbols-outlined text-[16px] mx-2">chevron_right</span>
+                        <span class="text-primary font-medium">Dashboard</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <!-- Congestion Gauge Widget -->
+                    <div
+                        class="hidden sm:flex items-center gap-4 px-4 py-1.5 rounded-full bg-surface-dark border border-border-dark">
+                        <div class="flex flex-col items-end">
+                            <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Congestion
+                                Status</span>
+                            <span class="text-sm font-bold text-green-500 flex items-center gap-1">
+                                <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                                LOW / OPTIMAL
+                            </span>
+                        </div>
+                        <div class="h-8 w-px bg-border-dark"></div>
+                        <div class="w-24 bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-green-500 w-[25%] h-full rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 border-l border-border-dark pl-6">
+                        <button
+                            class="relative p-2 text-slate-400 hover:text-white transition-colors rounded-full hover:bg-surface-dark">
+                            <span class="material-symbols-outlined">notifications</span>
+                            <span
+                                class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 border border-background-dark"></span>
+                        </button>
+                        <button
+                            class="p-2 text-slate-400 hover:text-white transition-colors rounded-full hover:bg-surface-dark">
+                            <span class="material-symbols-outlined">help</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <!-- Dashboard Content Scroll Area -->
+            <div class="flex-1 overflow-y-auto p-6 scroll-smooth">
+                <div class="max-w-[1600px] mx-auto flex flex-col gap-6">
+                    <!-- Title Area -->
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Gate A Monitor</h2>
+                            <p class="text-slate-400 text-sm mt-1">Real-time throughput and congestion analysis</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="relative group">
+                                <span class="absolute inset-y-0 left-3 flex items-center text-slate-500">
+                                    <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                </span>
+                                <select
+                                    class="appearance-none bg-surface-dark border border-border-dark text-white text-sm rounded-lg pl-10 pr-8 py-2.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer hover:bg-[#2a2215] transition-colors">
+                                    <option>Today: Oct 24</option>
+                                    <option>Yesterday</option>
+                                    <option>Last 7 Days</option>
+                                </select>
+                                <span
+                                    class="absolute inset-y-0 right-3 flex items-center text-slate-500 pointer-events-none">
+                                    <span class="material-symbols-outlined text-[20px]">expand_more</span>
+                                </span>
+                            </div>
+                            <button
+                                class="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-all shadow-lg shadow-primary/20">
+                                <span class="material-symbols-outlined text-[20px]">download</span>
+                                <span>Export Report</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- KPI Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                        <!-- KPI Card 1 -->
+                        <div
+                            class="bg-surface-dark border border-border-dark rounded-xl p-5 relative overflow-hidden group hover:border-primary/50 transition-colors">
+                            <div
+                                class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <span class="material-symbols-outlined text-6xl text-primary">local_shipping</span>
+                            </div>
+                            <div class="flex flex-col gap-1 relative z-10">
+                                <p class="text-slate-400 text-sm font-medium flex items-center gap-2">
+                                    Total Trucks
+                                    <span class="material-symbols-outlined text-[16px] text-slate-500">info</span>
+                                </p>
+                                <div class="flex items-end gap-3 mt-2">
+                                    <span class="text-3xl font-bold text-white">1,248</span>
+                                    <span
+                                        class="text-xs font-medium text-green-500 bg-green-500/10 px-1.5 py-0.5 rounded mb-1 flex items-center">
+                                        <span class="material-symbols-outlined text-[12px] mr-0.5">trending_up</span>
+                                        12%
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-1">vs. last hour</p>
+                            </div>
+                            <div class="w-full bg-slate-800 h-1 mt-4 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <!-- KPI Card 2 -->
+                        <div
+                            class="bg-surface-dark border border-border-dark rounded-xl p-5 relative overflow-hidden group hover:border-primary/50 transition-colors">
+                            <div
+                                class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <span class="material-symbols-outlined text-6xl text-primary">traffic</span>
+                            </div>
+                            <div class="flex flex-col gap-1 relative z-10">
+                                <p class="text-slate-400 text-sm font-medium">Congestion Index</p>
+                                <div class="flex items-end gap-3 mt-2">
+                                    <span class="text-3xl font-bold text-white">14%</span>
+                                    <span
+                                        class="text-xs font-medium text-slate-400 bg-slate-700/30 px-1.5 py-0.5 rounded mb-1">
+                                        Optimal
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-1">Capacity remaining: 86%</p>
+                            </div>
+                            <div class="w-full bg-slate-800 h-1 mt-4 rounded-full overflow-hidden">
+                                <div class="bg-green-500 h-full rounded-full" style="width: 14%"></div>
+                            </div>
+                        </div>
+                        <!-- KPI Card 3 -->
+                        <div
+                            class="bg-surface-dark border border-border-dark rounded-xl p-5 relative overflow-hidden group hover:border-primary/50 transition-colors">
+                            <div
+                                class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <span class="material-symbols-outlined text-6xl text-primary">timer</span>
+                            </div>
+                            <div class="flex flex-col gap-1 relative z-10">
+                                <p class="text-slate-400 text-sm font-medium">Avg Turnaround</p>
+                                <div class="flex items-end gap-3 mt-2">
+                                    <span class="text-3xl font-bold text-white">42 <span
+                                            class="text-lg font-normal text-slate-500">min</span></span>
+                                    <span
+                                        class="text-xs font-medium text-green-500 bg-green-500/10 px-1.5 py-0.5 rounded mb-1 flex items-center">
+                                        <span class="material-symbols-outlined text-[12px] mr-0.5">arrow_downward</span>
+                                        5m
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-1">Target: 47 min</p>
+                            </div>
+                            <div class="w-full bg-slate-800 h-1 mt-4 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <!-- KPI Card 4 -->
+                        <div
+                            class="bg-surface-dark border border-border-dark rounded-xl p-5 relative overflow-hidden group hover:border-primary/50 transition-colors">
+                            <div
+                                class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <span class="material-symbols-outlined text-6xl text-primary">eco</span>
+                            </div>
+                            <div class="flex flex-col gap-1 relative z-10">
+                                <p class="text-slate-400 text-sm font-medium">CO2 Saved</p>
+                                <div class="flex items-end gap-3 mt-2">
+                                    <span class="text-3xl font-bold text-white">850 <span
+                                            class="text-lg font-normal text-slate-500">kg</span></span>
+                                    <span
+                                        class="text-xs font-medium text-green-500 bg-green-500/10 px-1.5 py-0.5 rounded mb-1 flex items-center">
+                                        <span class="material-symbols-outlined text-[12px] mr-0.5">trending_up</span>
+                                        2%
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-1">Reduced idle time</p>
+                            </div>
+                            <div class="w-full bg-slate-800 h-1 mt-4 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Main Chart & Alerts Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full min-h-[500px]">
+                        <!-- Chart Container -->
+                        <div
+                            class="lg:col-span-2 bg-surface-dark border border-border-dark rounded-xl p-6 flex flex-col shadow-sm">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 class="text-lg font-bold text-white">Truck Volume vs. Congestion Trend</h3>
+                                    <p class="text-xs text-slate-400">Comparing inbound traffic volume with gate
+                                        processing friction.</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="flex items-center gap-2 px-3 py-1 rounded bg-background-dark border border-border-dark">
+                                        <div class="w-3 h-3 rounded-full bg-primary"></div>
+                                        <span class="text-xs text-slate-300">Volume</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-2 px-3 py-1 rounded bg-background-dark border border-border-dark">
+                                        <div class="w-3 h-3 rounded-full bg-red-500/50 border border-red-500"></div>
+                                        <span class="text-xs text-slate-300">Friction</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Simulated Chart Area -->
+                            <div
+                                class="relative flex-1 w-full chart-grid rounded-lg border border-border-dark/50 overflow-hidden flex flex-col justify-end p-4">
+                                <!-- Y Axis Labels Left -->
+                                <div
+                                    class="absolute left-0 top-0 bottom-8 w-10 flex flex-col justify-between items-end pr-2 py-4 text-[10px] text-slate-500 font-mono">
+                                    <span>200</span>
+                                    <span>150</span>
+                                    <span>100</span>
+                                    <span>50</span>
+                                    <span>0</span>
+                                </div>
+                                <!-- Y Axis Labels Right -->
+                                <div
+                                    class="absolute right-0 top-0 bottom-8 w-10 flex flex-col justify-between items-start pl-2 py-4 text-[10px] text-slate-500 font-mono">
+                                    <span>100%</span>
+                                    <span>75%</span>
+                                    <span>50%</span>
+                                    <span>25%</span>
+                                    <span>0%</span>
+                                </div>
+                                <!-- Chart Bars/Lines Simulation -->
+                                <div
+                                    class="relative w-full h-full ml-10 mr-10 flex items-end justify-between gap-1 pb-6 pt-10">
+                                    <!-- Using CSS clip-path to simulate area chart -->
+                                    <div class="absolute inset-0 top-4 bottom-6 left-0 right-0 opacity-20 bg-gradient-to-t from-primary to-transparent"
+                                        style="clip-path: polygon(0% 100%, 10% 80%, 20% 60%, 30% 70%, 40% 40%, 50% 30%, 60% 50%, 70% 40%, 80% 20%, 90% 30%, 100% 50%, 100% 100%);">
+                                    </div>
+                                    <div class="absolute inset-0 top-4 bottom-6 left-0 right-0 border-t-2 border-primary"
+                                        style="clip-path: polygon(0% 100%, 0% 100%, 10% 80%, 20% 60%, 30% 70%, 40% 40%, 50% 30%, 60% 50%, 70% 40%, 80% 20%, 90% 30%, 100% 50%, 100% 100%); background: transparent; height: 100%;">
+                                    </div>
+                                    <!-- Secondary Line Simulation (Congestion) -->
+                                    <svg class="absolute inset-0 w-full h-full pointer-events-none"
+                                        preserveaspectratio="none">
+                                        <path class="opacity-60"
+                                            d="M0,250 C50,250 100,240 150,230 C200,220 250,240 300,210 C350,180 400,190 450,160 C500,130 550,140 600,150 C650,160 700,120 750,100"
+                                            fill="none" stroke="#ef4444" stroke-dasharray="5,5" stroke-width="2"
+                                            vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                    <!-- X Axis Labels -->
+                                    <div
+                                        class="absolute bottom-0 left-0 right-0 flex justify-between text-[10px] text-slate-500 font-mono">
+                                        <span>00:00</span>
+                                        <span>04:00</span>
+                                        <span>08:00</span>
+                                        <span>12:00</span>
+                                        <span>16:00</span>
+                                        <span>20:00</span>
+                                        <span>24:00</span>
+                                    </div>
+                                    <!-- Tooltip simulation -->
+                                    <div
+                                        class="absolute left-[40%] top-[30%] bg-surface-dark border border-border-dark p-2 rounded shadow-xl z-10">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <div class="w-2 h-2 rounded-full bg-primary"></div>
+                                            <span class="text-xs text-white">124 Trucks</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                            <span class="text-xs text-slate-300">High Friction</span>
+                                        </div>
+                                        <div
+                                            class="absolute bottom-[-5px] left-1/2 -translate-x-1/2 w-2 h-2 bg-surface-dark border-r border-b border-border-dark rotate-45">
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute left-[40%] top-4 bottom-6 w-px border-l border-dashed border-slate-600">
+                                    </div>
+                                    <div
+                                        class="absolute left-[40%] top-[40%] w-3 h-3 bg-primary rounded-full border-2 border-surface-dark -translate-x-[5px]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Live Alerts Feed -->
+                        <div
+                            class="bg-surface-dark border border-border-dark rounded-xl flex flex-col shadow-sm h-full overflow-hidden">
+                            <div
+                                class="p-4 border-b border-border-dark flex items-center justify-between bg-surface-dark">
+                                <div class="flex items-center gap-2">
+                                    <span class="relative flex h-3 w-3">
+                                        <span
+                                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                                    </span>
+                                    <h3 class="text-base font-bold text-white">Live Alerts</h3>
+                                </div>
+                                <button class="text-xs text-primary hover:text-primary-hover font-medium">Clear
+                                    All</button>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-4 space-y-3">
+                                <!-- Alert Item Critical -->
+                                <div
+                                    class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 flex gap-3 items-start group hover:bg-red-500/20 transition-colors cursor-pointer">
+                                    <div class="bg-red-500/20 p-1.5 rounded text-red-500 mt-0.5">
+                                        <span class="material-symbols-outlined text-[18px]">warning</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="text-sm font-semibold text-white">Gate 4 Sensor Malfunction</h4>
+                                            <span
+                                                class="text-[10px] text-red-400 font-mono bg-red-950/50 px-1.5 rounded">14:02</span>
+                                        </div>
+                                        <p class="text-xs text-red-200/70 mt-1 leading-snug">Optical sensor
+                                            unresponsive. Manual override required immediately.</p>
+                                    </div>
+                                </div>
+                                <!-- Alert Item Warning -->
+                                <div
+                                    class="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20 flex gap-3 items-start group hover:bg-orange-500/20 transition-colors cursor-pointer">
+                                    <div class="bg-orange-500/20 p-1.5 rounded text-orange-500 mt-0.5">
+                                        <span class="material-symbols-outlined text-[18px]">error</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="text-sm font-semibold text-white">Unexpected Volume Spike</h4>
+                                            <span
+                                                class="text-[10px] text-orange-400 font-mono bg-orange-950/50 px-1.5 rounded">13:55</span>
+                                        </div>
+                                        <p class="text-xs text-orange-200/70 mt-1 leading-snug">Inbound lane 2 exceeding
+                                            capacity threshold by 15%.</p>
+                                    </div>
+                                </div>
+                                <!-- Alert Item Info -->
+                                <div
+                                    class="p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 flex gap-3 items-start group hover:bg-blue-500/10 transition-colors cursor-pointer">
+                                    <div class="bg-blue-500/10 p-1.5 rounded text-blue-400 mt-0.5">
+                                        <span class="material-symbols-outlined text-[18px]">info</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="text-sm font-semibold text-slate-200">Shift Change Complete</h4>
+                                            <span
+                                                class="text-[10px] text-slate-500 font-mono bg-slate-800/50 px-1.5 rounded">13:30</span>
+                                        </div>
+                                        <p class="text-xs text-slate-400 mt-1 leading-snug">Team Alpha successfully
+                                            logged out. Team Beta active.</p>
+                                    </div>
+                                </div>
+                                <!-- Alert Item Info 2 -->
+                                <div
+                                    class="p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 flex gap-3 items-start group hover:bg-blue-500/10 transition-colors cursor-pointer">
+                                    <div class="bg-blue-500/10 p-1.5 rounded text-blue-400 mt-0.5">
+                                        <span class="material-symbols-outlined text-[18px]">cloud_sync</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="text-sm font-semibold text-slate-200">Data Sync</h4>
+                                            <span
+                                                class="text-[10px] text-slate-500 font-mono bg-slate-800/50 px-1.5 rounded">13:15</span>
+                                        </div>
+                                        <p class="text-xs text-slate-400 mt-1 leading-snug">Fleet telemetry synchronized
+                                            with central server.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bottom Grid (Secondary Data) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-base font-bold text-white">Processing Efficiency by Lane</h3>
+                                <button class="text-primary hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                </button>
+                            </div>
+                            <div class="space-y-4">
+                                <!-- Lane 1 -->
+                                <div class="flex items-center gap-4">
+                                    <div class="w-16 text-xs text-slate-400 font-mono">LANE A1</div>
+                                    <div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-primary h-full rounded-full" style="width: 92%"></div>
+                                    </div>
+                                    <div class="w-10 text-right text-xs font-bold text-white">92%</div>
+                                </div>
+                                <!-- Lane 2 -->
+                                <div class="flex items-center gap-4">
+                                    <div class="w-16 text-xs text-slate-400 font-mono">LANE A2</div>
+                                    <div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-green-500 h-full rounded-full" style="width: 85%"></div>
+                                    </div>
+                                    <div class="w-10 text-right text-xs font-bold text-white">85%</div>
+                                </div>
+                                <!-- Lane 3 -->
+                                <div class="flex items-center gap-4">
+                                    <div class="w-16 text-xs text-slate-400 font-mono">LANE B1</div>
+                                    <div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-yellow-500 h-full rounded-full" style="width: 64%"></div>
+                                    </div>
+                                    <div class="w-10 text-right text-xs font-bold text-white">64%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-surface-dark border border-border-dark rounded-xl p-6 relative overflow-hidden">
+                            <div class="absolute inset-0 z-0">
+                                <!-- Decorative Map Background Placeholder -->
+                                <div class="w-full h-full bg-slate-800/30 bg-cover bg-center grayscale opacity-20"
+                                    data-alt="Abstract satellite map view of a port terminal"
+                                    data-location="Port Terminal"
+                                    style="background-image: url('https://placeholder.pics/svg/300');"></div>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/80 to-transparent">
+                                </div>
+                            </div>
+                            <div class="relative z-10 h-full flex flex-col justify-between">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="text-base font-bold text-white">Active Zones</h3>
+                                        <p class="text-xs text-slate-400">Security &amp; Sensor Status</p>
+                                    </div>
+                                    <span
+                                        class="bg-green-500/20 text-green-400 text-[10px] font-bold px-2 py-1 rounded border border-green-500/30 uppercase">All
+                                        Systems Normal</span>
+                                </div>
+                                <div class="flex gap-4 mt-6">
+                                    <div
+                                        class="flex-1 bg-background-dark/80 backdrop-blur border border-border-dark p-3 rounded-lg text-center">
+                                        <div class="text-2xl font-bold text-white">24</div>
+                                        <div class="text-[10px] text-slate-400 uppercase tracking-wide">Cranes Active
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-background-dark/80 backdrop-blur border border-border-dark p-3 rounded-lg text-center">
+                                        <div class="text-2xl font-bold text-white">112</div>
+                                        <div class="text-[10px] text-slate-400 uppercase tracking-wide">Cameras Online
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-background-dark/80 backdrop-blur border border-border-dark p-3 rounded-lg text-center">
+                                        <div class="text-2xl font-bold text-white">8</div>
+                                        <div class="text-[10px] text-slate-400 uppercase tracking-wide">Patrol Units
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="pt-6 pb-2 text-center text-xs text-slate-600">
+                        © 2023 Port Logistics Admin Console. v4.2.0 (Build 892)
+                    </footer>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

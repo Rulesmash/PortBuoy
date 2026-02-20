@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Smart Slot Booking Manager</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c77400",
+                        "primary-hover": "#e08e1a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#181510",
+                        "surface-dark": "#231e16",
+                        "surface-light": "#ffffff",
+                        "border-dark": "#3a3227",
+                        "text-secondary": "#bcae9a",
+                        "success": "#0bda19",
+                        "warning": "#eab308",
+                        "error": "#fa3f38",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom scrollbar for timeline */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .timeline-grid {
+            background-size: 100px 100%;
+            background-image: linear-gradient(to right, #3a3227 1px, transparent 1px);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display overflow-hidden">
+    <!-- Top Navigation -->
+    <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-background-dark px-6 py-3 shrink-0 z-20">
+        <div class="flex items-center gap-8">
+            <div class="flex items-center gap-3 text-white">
+                <div class="size-8 rounded-lg bg-primary flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">local_shipping</span>
+                </div>
+                <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">PortFlow AI</h2>
+            </div>
+            <!-- Global Search -->
+            <div
+                class="hidden md:flex w-80 items-center gap-2 rounded-lg bg-surface-dark px-3 py-2 border border-border-dark">
+                <span class="material-symbols-outlined text-text-secondary">search</span>
+                <input
+                    class="bg-transparent border-none text-white placeholder-text-secondary focus:ring-0 p-0 text-sm w-full"
+                    placeholder="Search truck ID, driver, or container..." />
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="relative text-text-secondary hover:text-white transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-0 right-0 size-2 bg-error rounded-full"></span>
+            </button>
+            <button class="text-text-secondary hover:text-white transition-colors">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div class="flex items-center gap-3 pl-4 border-l border-border-dark">
+                <div class="text-right hidden sm:block">
+                    <p class="text-sm font-medium text-white">Alex Morgan</p>
+                    <p class="text-xs text-text-secondary">Gate Operator</p>
+                </div>
+                <div class="size-9 rounded-full bg-surface-dark border border-border-dark overflow-hidden">
+                    <img alt="User Avatar" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfHD8guHfd5UfAeQyMzqE_7_A2J64ls8RVBid79WIIWqpoO74tYCI43pT9UMsoUzfwz52syMriZGglU1SMI7PipJ0b_Z6QNuPdAKC1KshdKDYQ-M-CI3tGVr99PvuZDL2bFEvS3yf6V9p0hi-_5Sds8DVgKD6ENxLOa3c8_FUPAdQyM4wFMIkm8EgsLLkQIFaIqi3gxT1krA28ci1_fscr0lkFYpd3hkgYOc358WUdFTuUf_xF67MikyoPKAZmS2IdClVlYQSz2I74" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <nav
+            class="w-20 lg:w-64 bg-background-dark border-r border-border-dark flex flex-col shrink-0 transition-all duration-300">
+            <div class="p-4 space-y-2">
+                <a class="flex items-center gap-3 px-3 py-3 text-text-secondary hover:text-white hover:bg-surface-dark rounded-lg transition-colors group"
+                    href="/admin">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+                    <span class="hidden lg:block font-medium">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 text-white bg-surface-dark border border-border-dark rounded-lg transition-colors"
+                    href="/booking">
+                    <span class="material-symbols-outlined text-primary">calendar_month</span>
+                    <span class="hidden lg:block font-medium">Slot Booking</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 text-text-secondary hover:text-white hover:bg-surface-dark rounded-lg transition-colors group"
+                    href="/booking">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">rv_hookup</span>
+                    <span class="hidden lg:block font-medium">Gate Control</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 text-text-secondary hover:text-white hover:bg-surface-dark rounded-lg transition-colors group"
+                    href="/esg">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
+                    <span class="hidden lg:block font-medium">Analytics</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 text-text-secondary hover:text-white hover:bg-surface-dark rounded-lg transition-colors group"
+                    href="/driver">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+                    <span class="hidden lg:block font-medium">Drivers</span>
+                </a>
+            </div>
+            <div class="mt-auto p-4 border-t border-border-dark">
+                <div class="bg-surface-dark rounded-lg p-4 border border-border-dark hidden lg:block">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">System
+                            Status</span>
+                        <span class="size-2 rounded-full bg-success"></span>
+                    </div>
+                    <p class="text-sm text-white">All systems operational</p>
+                    <p class="text-xs text-text-secondary mt-1">Version 2.4.0</p>
+                </div>
+            </div>
+        </nav>
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0 bg-background-dark relative overflow-hidden">
+            <!-- AI Recommendation Banner -->
+            <div class="px-6 py-4">
+                <div
+                    class="relative overflow-hidden rounded-xl bg-gradient-to-r from-surface-dark to-[#2f251a] border border-primary/30 shadow-[0_0_15px_rgba(199,116,0,0.15)]">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                        <span
+                            class="material-symbols-outlined text-[120px] leading-none text-primary">auto_awesome</span>
+                    </div>
+                    <div class="relative z-10 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex gap-4 items-start">
+                            <div
+                                class="size-12 rounded-lg bg-primary/20 flex items-center justify-center shrink-0 text-primary border border-primary/20">
+                                <span class="material-symbols-outlined text-2xl">auto_awesome</span>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                                    Smart Recommendation Active
+                                    <span
+                                        class="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wide border border-primary/20">Live</span>
+                                </h3>
+                                <p class="text-text-secondary mt-1 max-w-2xl">
+                                    AI analysis predicts optimal traffic flow at <span
+                                        class="text-white font-semibold">2:30 PM</span>.
+                                    Current yard density is high (85%). Suggest diverting incoming haulers to Gate 4.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 shrink-0">
+                            <button
+                                class="px-4 py-2 rounded-lg border border-border-dark text-white hover:bg-surface-dark transition-colors text-sm font-medium">
+                                Dismiss
+                            </button>
+                            <button
+                                class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-hover text-white transition-colors text-sm font-bold shadow-lg shadow-primary/20 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">check_circle</span>
+                                Apply Slot Shifts
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content Grid -->
+            <div class="flex-1 flex flex-col lg:flex-row gap-6 px-6 pb-6 min-h-0">
+                <!-- Left Column: Timeline & Controls -->
+                <div class="flex-1 flex flex-col min-w-0 gap-4">
+                    <!-- Filters & Date Navigation -->
+                    <div
+                        class="flex items-center justify-between bg-surface-dark p-3 rounded-lg border border-border-dark">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center gap-2 bg-background-dark px-2 py-1 rounded border border-border-dark">
+                                <button class="p-1 hover:text-white text-text-secondary rounded"><span
+                                        class="material-symbols-outlined">chevron_left</span></button>
+                                <span class="text-white font-medium px-2">Today, Oct 24</span>
+                                <button class="p-1 hover:text-white text-text-secondary rounded"><span
+                                        class="material-symbols-outlined">chevron_right</span></button>
+                            </div>
+                            <div class="h-6 w-px bg-border-dark"></div>
+                            <button
+                                class="text-sm font-medium text-primary bg-primary/10 px-3 py-1.5 rounded border border-primary/20">Timeline</button>
+                            <button
+                                class="text-sm font-medium text-text-secondary hover:text-white px-3 py-1.5 rounded">List
+                                View</button>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2 text-xs text-text-secondary">
+                                <span class="flex items-center gap-1"><span
+                                        class="size-2 rounded-full bg-success"></span>Low</span>
+                                <span class="flex items-center gap-1"><span
+                                        class="size-2 rounded-full bg-warning"></span>Med</span>
+                                <span class="flex items-center gap-1"><span
+                                        class="size-2 rounded-full bg-error"></span>High</span>
+                            </div>
+                            <button
+                                class="flex items-center gap-2 text-sm text-white bg-background-dark border border-border-dark px-3 py-1.5 rounded hover:bg-border-dark transition-colors">
+                                <span class="material-symbols-outlined text-lg">filter_list</span> Filter
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Timeline Visualization -->
+                    <div
+                        class="flex-1 bg-surface-dark border border-border-dark rounded-xl flex flex-col min-h-0 overflow-hidden relative">
+                        <!-- Timeline Header (Time axis) -->
+                        <div class="flex border-b border-border-dark bg-[#2a241d]">
+                            <div
+                                class="w-32 shrink-0 p-4 border-r border-border-dark flex items-center font-semibold text-text-secondary text-sm">
+                                Gate / Time
+                            </div>
+                            <div class="flex-1 overflow-hidden relative">
+                                <div class="flex min-w-full">
+                                    <!-- Generating time slots -->
+                                    <div
+                                        class="flex-1 min-w-[100px] border-r border-border-dark/50 p-2 text-xs text-text-secondary text-center">
+                                        12:00 PM</div>
+                                    <div
+                                        class="flex-1 min-w-[100px] border-r border-border-dark/50 p-2 text-xs text-text-secondary text-center">
+                                        1:00 PM</div>
+                                    <div
+                                        class="flex-1 min-w-[100px] border-r border-border-dark/50 p-2 text-xs text-text-secondary text-center">
+                                        2:00 PM</div>
+                                    <div
+                                        class="flex-1 min-w-[100px] border-r border-border-dark/50 p-2 text-xs text-text-secondary text-center">
+                                        3:00 PM</div>
+                                    <div
+                                        class="flex-1 min-w-[100px] border-r border-border-dark/50 p-2 text-xs text-text-secondary text-center">
+                                        4:00 PM</div>
+                                    <div
+                                        class="flex-1 min-w-[100px] border-r border-border-dark/50 p-2 text-xs text-text-secondary text-center">
+                                        5:00 PM</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Timeline Body -->
+                        <div class="overflow-auto flex-1 custom-scrollbar relative">
+                            <!-- Current Time Indicator Line -->
+                            <div class="absolute top-0 bottom-0 w-0.5 bg-primary z-10 pointer-events-none"
+                                style="left: 35%;">
+                                <div class="absolute -top-1 -left-1.5 size-3 bg-primary rounded-full"></div>
+                            </div>
+                            <!-- Gate 1 Row -->
+                            <div
+                                class="flex border-b border-border-dark/50 h-24 hover:bg-white/5 transition-colors group">
+                                <div
+                                    class="w-32 shrink-0 border-r border-border-dark p-4 flex flex-col justify-center bg-surface-dark sticky left-0 z-10 group-hover:bg-[#2a241d] transition-colors">
+                                    <span class="text-white font-medium">Gate 1</span>
+                                    <span class="text-xs text-text-secondary">General Cargo</span>
+                                </div>
+                                <div class="flex-1 relative timeline-grid">
+                                    <!-- Booking Block -->
+                                    <div
+                                        class="absolute top-2 bottom-2 left-[5%] width-[15%] bg-surface-dark border-l-4 border-success rounded-r-md p-2 shadow-sm min-w-[140px] hover:bg-[#2f2820] cursor-pointer transition-all hover:scale-[1.02] z-10">
+                                        <div class="flex justify-between items-start">
+                                            <span class="text-xs font-bold text-white">TRK-882</span>
+                                            <span
+                                                class="material-symbols-outlined text-success text-sm">check_circle</span>
+                                        </div>
+                                        <div class="text-[10px] text-text-secondary mt-1">Maersk • 2 Containers</div>
+                                    </div>
+                                    <!-- Booking Block -->
+                                    <div
+                                        class="absolute top-2 bottom-2 left-[25%] width-[12%] bg-surface-dark border-l-4 border-warning rounded-r-md p-2 shadow-sm min-w-[120px] hover:bg-[#2f2820] cursor-pointer transition-all hover:scale-[1.02] z-10">
+                                        <div class="flex justify-between items-start">
+                                            <span class="text-xs font-bold text-white">TRK-901</span>
+                                            <span class="material-symbols-outlined text-warning text-sm">warning</span>
+                                        </div>
+                                        <div class="text-[10px] text-text-secondary mt-1">Hapag • Delayed</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Gate 2 Row -->
+                            <div
+                                class="flex border-b border-border-dark/50 h-24 hover:bg-white/5 transition-colors group">
+                                <div
+                                    class="w-32 shrink-0 border-r border-border-dark p-4 flex flex-col justify-center bg-surface-dark sticky left-0 z-10 group-hover:bg-[#2a241d] transition-colors">
+                                    <span class="text-white font-medium">Gate 2</span>
+                                    <span class="text-xs text-text-secondary">Reefer Only</span>
+                                </div>
+                                <div class="flex-1 relative timeline-grid">
+                                    <!-- Empty Slot Indicator (AI Suggested) -->
+                                    <div
+                                        class="absolute top-2 bottom-2 left-[42%] w-[16%] border-2 border-dashed border-primary/40 bg-primary/5 rounded-md flex items-center justify-center cursor-pointer hover:bg-primary/10 transition-colors">
+                                        <div class="text-center">
+                                            <span
+                                                class="material-symbols-outlined text-primary text-lg">add_circle</span>
+                                            <p class="text-[10px] text-primary font-medium mt-0.5">Optimal Slot</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Gate 3 Row -->
+                            <div
+                                class="flex border-b border-border-dark/50 h-24 hover:bg-white/5 transition-colors group">
+                                <div
+                                    class="w-32 shrink-0 border-r border-border-dark p-4 flex flex-col justify-center bg-surface-dark sticky left-0 z-10 group-hover:bg-[#2a241d] transition-colors">
+                                    <span class="text-white font-medium">Gate 3</span>
+                                    <span class="text-xs text-text-secondary">Bulk</span>
+                                </div>
+                                <div class="flex-1 relative timeline-grid">
+                                    <!-- Booking Block -->
+                                    <div
+                                        class="absolute top-2 bottom-2 left-[10%] width-[20%] bg-surface-dark border-l-4 border-error rounded-r-md p-2 shadow-sm min-w-[160px] hover:bg-[#2f2820] cursor-pointer transition-all hover:scale-[1.02] z-10">
+                                        <div class="flex justify-between items-start">
+                                            <span class="text-xs font-bold text-white">TRK-104</span>
+                                            <span class="material-symbols-outlined text-error text-sm">error</span>
+                                        </div>
+                                        <div class="text-[10px] text-text-secondary mt-1">MSC • Custom Hold</div>
+                                    </div>
+                                    <!-- Booking Block -->
+                                    <div
+                                        class="absolute top-2 bottom-2 left-[60%] width-[15%] bg-surface-dark border-l-4 border-success rounded-r-md p-2 shadow-sm min-w-[140px] hover:bg-[#2f2820] cursor-pointer transition-all hover:scale-[1.02] z-10">
+                                        <div class="flex justify-between items-start">
+                                            <span class="text-xs font-bold text-white">TRK-552</span>
+                                            <span class="material-symbols-outlined text-success text-sm">schedule</span>
+                                        </div>
+                                        <div class="text-[10px] text-text-secondary mt-1">Cosco • On Time</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Gate 4 Row -->
+                            <div
+                                class="flex border-b border-border-dark/50 h-24 hover:bg-white/5 transition-colors group">
+                                <div
+                                    class="w-32 shrink-0 border-r border-border-dark p-4 flex flex-col justify-center bg-surface-dark sticky left-0 z-10 group-hover:bg-[#2a241d] transition-colors">
+                                    <span class="text-white font-medium">Gate 4</span>
+                                    <span class="text-xs text-text-secondary">Express</span>
+                                </div>
+                                <div class="flex-1 relative timeline-grid">
+                                    <!-- Booking Block -->
+                                    <div
+                                        class="absolute top-2 bottom-2 left-[32%] width-[10%] bg-surface-dark border-l-4 border-success rounded-r-md p-2 shadow-sm min-w-[100px] hover:bg-[#2f2820] cursor-pointer transition-all hover:scale-[1.02] z-10">
+                                        <div class="flex justify-between items-start">
+                                            <span class="text-xs font-bold text-white">TRK-331</span>
+                                        </div>
+                                        <div class="text-[10px] text-text-secondary mt-1">Evergreen</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Gate 5 Row -->
+                            <div
+                                class="flex border-b border-border-dark/50 h-24 hover:bg-white/5 transition-colors group">
+                                <div
+                                    class="w-32 shrink-0 border-r border-border-dark p-4 flex flex-col justify-center bg-surface-dark sticky left-0 z-10 group-hover:bg-[#2a241d] transition-colors">
+                                    <span class="text-white font-medium">Gate 5</span>
+                                    <span class="text-xs text-text-secondary">Overflow</span>
+                                </div>
+                                <div class="flex-1 relative timeline-grid">
+                                    <!-- Empty -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Column: Booking & Details Sidebar -->
+                <div
+                    class="w-full lg:w-96 bg-surface-dark border border-border-dark rounded-xl flex flex-col shrink-0 overflow-hidden shadow-lg">
+                    <div class="p-5 border-b border-border-dark flex items-center justify-between">
+                        <h3 class="text-white font-bold text-lg">Book New Slot</h3>
+                        <button class="text-text-secondary hover:text-white">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div class="p-5 flex-1 overflow-y-auto space-y-6">
+                        <!-- AI Predictive Metric -->
+                        <div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex items-start gap-3">
+                            <span class="material-symbols-outlined text-primary mt-0.5">cloud_circle</span>
+                            <div>
+                                <p class="text-xs font-bold text-primary uppercase mb-1">Predictive Insight</p>
+                                <p class="text-sm text-text-secondary">
+                                    Rain expected at 3:00 PM. Expect <span class="text-white font-bold">+15 min</span>
+                                    delay for Gate 3 operations.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Form -->
+                        <div class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-text-secondary">Truck ID / License Plate</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary">local_shipping</span>
+                                    <input
+                                        class="w-full bg-background-dark border border-border-dark rounded-lg py-2 pl-10 pr-3 text-white placeholder-text-secondary/50 focus:border-primary focus:ring-1 focus:ring-primary text-sm"
+                                        placeholder="e.g. TRK-9922" type="text" />
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-text-secondary">Container Type</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary">inventory_2</span>
+                                    <select
+                                        class="w-full bg-background-dark border border-border-dark rounded-lg py-2 pl-10 pr-8 text-white focus:border-primary focus:ring-1 focus:ring-primary text-sm appearance-none">
+                                        <option>Standard 40ft</option>
+                                        <option>Refrigerated (Reefer)</option>
+                                        <option>Hazardous Materials</option>
+                                        <option>Open Top</option>
+                                    </select>
+                                    <span
+                                        class="material-symbols-outlined absolute right-3 top-2.5 text-text-secondary pointer-events-none">expand_more</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="text-sm font-medium text-text-secondary">Gate</label>
+                                    <select
+                                        class="w-full bg-background-dark border border-border-dark rounded-lg py-2 px-3 text-white focus:border-primary focus:ring-1 focus:ring-primary text-sm">
+                                        <option>Gate 1</option>
+                                        <option>Gate 2</option>
+                                        <option>Gate 4 (Recommended)</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-sm font-medium text-text-secondary">Time</label>
+                                    <input
+                                        class="w-full bg-background-dark border border-border-dark rounded-lg py-2 px-3 text-white focus:border-primary focus:ring-1 focus:ring-primary text-sm"
+                                        type="time" value="14:30" />
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-text-secondary">Driver Details</label>
+                                <div
+                                    class="flex items-center gap-3 p-3 bg-background-dark rounded-lg border border-border-dark">
+                                    <div
+                                        class="size-8 rounded-full bg-surface-dark flex items-center justify-center border border-border-dark text-text-secondary">
+                                        <span class="material-symbols-outlined text-lg">person</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-white">Select Driver</p>
+                                        <p class="text-xs text-text-secondary">Or scan ID card</p>
+                                    </div>
+                                    <button
+                                        class="text-primary hover:text-primary-hover text-sm font-medium">Browse</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Real-time Metrics Widgets -->
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="bg-background-dark p-3 rounded-lg border border-border-dark">
+                                <p class="text-xs text-text-secondary mb-1">Est. Turn Time</p>
+                                <p class="text-lg font-bold text-white">45 min</p>
+                                <p class="text-[10px] text-success flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">trending_down</span> -5m vs avg
+                                </p>
+                            </div>
+                            <div class="bg-background-dark p-3 rounded-lg border border-border-dark">
+                                <p class="text-xs text-text-secondary mb-1">Gate Queue</p>
+                                <p class="text-lg font-bold text-white">Low</p>
+                                <p class="text-[10px] text-text-secondary flex items-center gap-1">
+                                    3 trucks waiting
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5 border-t border-border-dark bg-background-dark">
+                        <div class="flex gap-3">
+                            <button
+                                class="flex-1 py-2.5 px-4 rounded-lg border border-border-dark text-white font-medium hover:bg-surface-dark transition-colors">Cancel</button>
+                            <button
+                                class="flex-1 py-2.5 px-4 rounded-lg bg-primary text-white font-bold hover:bg-primary-hover transition-colors shadow-lg shadow-primary/25">Confirm
+                                Slot</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

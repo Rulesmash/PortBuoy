@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>HarborMind Secure Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c77400",
+                        "primary-dark": "#a05d00",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#231b0f",
+                        "surface-dark": "#2c2419",
+                        "action-green": "#10b981", // Added for the requested green button
+                        "action-green-hover": "#059669",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    backgroundImage: {
+                        'texture': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c77400' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(35, 27, 15, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(199, 116, 0, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .role-tab-active {
+            background-color: rgba(199, 116, 0, 0.2);
+            border-color: #c77400;
+            color: #ffffff;
+        }
+
+        .role-tab-inactive {
+            background-color: transparent;
+            border-color: transparent;
+            color: #9ca3af;
+        }
+
+        .role-tab-inactive:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #d1d5db;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 z-0 bg-texture opacity-50 pointer-events-none"></div>
+    <!-- Abstract Gradient Blobs for mood -->
+    <div
+        class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none">
+    </div>
+    <div
+        class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none">
+    </div>
+    <!-- Main Container -->
+    <div class="relative z-10 w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <!-- Left Side: Branding & Info (Hidden on small screens or stacked) -->
+        <div class="hidden lg:flex flex-col justify-center space-y-6 px-8">
+            <div
+                class="w-16 h-16 bg-primary/20 rounded-xl flex items-center justify-center border border-primary/30 backdrop-blur-sm">
+                <span class="material-symbols-outlined text-primary text-4xl">anchor</span>
+            </div>
+            <div>
+                <h1 class="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white tracking-tight mb-4">
+                    Harbor<span class="text-primary">Mind</span>
+                </h1>
+                <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-md">
+                    Secure logistics management for the modern supply chain. Access your dashboard to monitor fleets,
+                    manage cargo, and oversee port operations in real-time.
+                </p>
+            </div>
+            <div class="flex items-center gap-4 mt-8">
+                <div class="flex -space-x-3">
+                    <img alt="User avatar 1" class="w-10 h-10 rounded-full border-2 border-background-dark"
+                        data-alt="Portrait of a female logistics manager"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0dLhEV6tNqlZHJ4Utes09biVwU2SJW7VuoPQYf3SsKS7WuK49aqM8XYR8HSfuFqFGfS4F13lZRVzGqCzOU3g-zK5H3-R2UCCCnRCfFfTncg6p4vmaq1QVW7eX4r3mcEFcdwu96pFAkPOU6ONwEdXPGFhkcwwT2ymdYr_uByPHzVwWZjvuRaZNtw-MUa6PuBApVLZurFwW9zJYB5xy1d2y1bALbJcAMQXtSLY9_3deOPoYUy-goew8sL6xYquR28CTNIkS_1hO-lwh" />
+                    <img alt="User avatar 2" class="w-10 h-10 rounded-full border-2 border-background-dark"
+                        data-alt="Portrait of a male driver"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD66bYb9DFK3TC_KDd5GiKB_6LXe3xwFSdpfyA5VU4Ncy6OW2aCVdDc52DnG9Pj0YeIM4X1UilgRQeACJvM0ThgbiD4mhhMHtF1F5EVBm9Osl2AXpuf9XzDNQAoo7Dc9Wz-TfIQr43D7DqzPRNnujpCQoh5wqfC0z1ofIyEqW3y2sneNQYZvlLArYRC4bBzANEJBmITRqs9VFJ9PEQEHpuxlOdULwL1cezxXExjePDcgCAG14CBrx_e9TDmtGMQMWFp1MwcaXogwuWD" />
+                    <img alt="User avatar 3" class="w-10 h-10 rounded-full border-2 border-background-dark"
+                        data-alt="Portrait of a male operator"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9bZRCatHvuJhI0oLlxWZ1bMXKhgkLsdhAMpK3ZJAf_cyc0zKlG7WLi9Ibo0DJAFF0fHbqvxAMoeShVsbJDX-u9T0qr0AWqhKrnhvl3cZm8EgqCjtqz4YZGLI8KNf-gu18yQXcTgQEk1taK8VnZOZrOniZ2zndPtQsZRRWZhsqzVeTENOdoSe_XtRGrRDSscisJD5WyQuL_w2nRZFgxxDpPzTA78vMyvttydMEgqYXb_UrkBFHVJO5VTdtnrroQ63k2n8Bl2SAQuE5" />
+                    <div
+                        class="w-10 h-10 rounded-full border-2 border-background-dark bg-surface-dark flex items-center justify-center text-xs text-white font-medium">
+                        +2k</div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white text-sm font-semibold">Trusted by 2,000+ Personnel</span>
+                    <span class="text-primary text-xs flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">verified_user</span> 99.9% Uptime
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Right Side: Glassmorphism Login Card -->
+        <div
+            class="glass-panel rounded-2xl p-8 lg:p-10 w-full max-w-[480px] mx-auto shadow-2xl relative overflow-hidden group">
+            <!-- Header inside card for mobile context mainly, but present always -->
+            <div class="text-center mb-8">
+                <div class="lg:hidden flex justify-center mb-4">
+                    <div
+                        class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30">
+                        <span class="material-symbols-outlined text-primary text-3xl">anchor</span>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-1">Welcome Back</h2>
+                <p class="text-slate-400 text-sm">Please select your role to sign in.</p>
+            </div>
+            <!-- Role Selection Tabs -->
+            <div class="grid grid-cols-3 gap-3 mb-8">
+                <!-- Admin Role -->
+                <script>
+                    function setRole(role, btn) {
+                        document.querySelectorAll('.role-tab-active').forEach(e => {
+                            e.classList.remove('role-tab-active');
+                            e.classList.add('role-tab-inactive')
+                        });
+                        btn.classList.remove('role-tab-inactive');
+                        btn.classList.add('role-tab-active');
+                        document.getElementById('loginForm').action = '/' + role;
+                    }
+                </script>
+                <button
+                    class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border transition-all duration-200 role-tab-inactive focus:outline-none focus:ring-2 focus:ring-primary/50 group/role"
+                    onclick="setRole('admin', this)" type="button">
+                    <span
+                        class="material-symbols-outlined text-2xl group-hover/role:scale-110 transition-transform">shield_person</span>
+                    <span class="text-xs font-semibold tracking-wide">Admin</span>
+                </button>
+                <!-- Operator Role (Active by Default) -->
+                <button
+                    class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border transition-all duration-200 role-tab-active focus:outline-none focus:ring-2 focus:ring-primary/50 group/role"
+                    onclick="setRole('booking', this)" type="button">
+                    <span
+                        class="material-symbols-outlined text-2xl group-hover/role:scale-110 transition-transform">support_agent</span>
+                    <span class="text-xs font-semibold tracking-wide">Operator</span>
+                </button>
+                <!-- Driver Role -->
+                <button
+                    class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border transition-all duration-200 role-tab-inactive focus:outline-none focus:ring-2 focus:ring-primary/50 group/role"
+                    onclick="setRole('driver', this)" type="button">
+                    <span
+                        class="material-symbols-outlined text-2xl group-hover/role:scale-110 transition-transform">local_shipping</span>
+                    <span class="text-xs font-semibold tracking-wide">Driver</span>
+                </button>
+            </div>
+            <!-- Login Form -->
+            <form id="loginForm" action="/booking" class="space-y-5">
+                <!-- Email Input -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-slate-300" for="email">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-slate-500 text-lg">mail</span>
+                        </div>
+                        <input
+                            class="block w-full pl-10 pr-3 py-3 border border-slate-700 rounded-lg leading-5 bg-surface-dark/50 text-slate-100 placeholder-slate-500 focus:outline-none focus:bg-surface-dark focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-colors"
+                            id="email" name="email" placeholder="user@harbormind.com" type="email" />
+                    </div>
+                </div>
+                <!-- Password Input -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label class="block text-sm font-medium text-slate-300" for="password">Password</label>
+                        <a class="text-xs text-primary hover:text-primary-dark transition-colors" href="#">Forgot
+                            password?</a>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-slate-500 text-lg">lock</span>
+                        </div>
+                        <input
+                            class="block w-full pl-10 pr-3 py-3 border border-slate-700 rounded-lg leading-5 bg-surface-dark/50 text-slate-100 placeholder-slate-500 focus:outline-none focus:bg-surface-dark focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-colors"
+                            id="password" name="password" placeholder="••••••••" type="password" />
+                    </div>
+                </div>
+                <!-- Demo Mode Toggle -->
+                <div class="flex items-center justify-between py-2 px-1">
+                    <div class="flex flex-col">
+                        <span class="text-sm text-slate-300 font-medium">Demo Mode</span>
+                        <span class="text-xs text-slate-500">Auto-fill credentials</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input class="sr-only peer" type="checkbox" value="" />
+                        <div
+                            class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                        </div>
+                    </label>
+                </div>
+                <!-- Action Button -->
+                <button
+                    class="w-full flex justify-center items-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-action-green hover:bg-action-green-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-action-green focus:ring-offset-surface-dark transition-all transform active:scale-[0.98]"
+                    type="submit">
+                    Sign In to Portal
+                    <span class="material-symbols-outlined ml-2 text-lg">login</span>
+                </button>
+            </form>
+            <!-- Footer Links -->
+            <div class="mt-8 pt-6 border-t border-slate-700/50 flex flex-col items-center gap-3">
+                <p class="text-slate-500 text-xs text-center">
+                    Protected by reCAPTCHA and subject to the HarborMind <a class="underline hover:text-slate-300"
+                        href="#">Privacy Policy</a> and <a class="underline hover:text-slate-300" href="#">Terms of
+                        Service</a>.
+                </p>
+                <div class="flex gap-4">
+                    <a class="flex items-center gap-1 text-slate-400 hover:text-primary text-xs transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-[16px]">help</span> Help Support
+                    </a>
+                    <a class="flex items-center gap-1 text-slate-400 hover:text-primary text-xs transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-[16px]">language</span> English (US)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>HarborMind - AI Port Logistics</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c77400",
+                        "primary-dark": "#a05d00",
+                        "accent-green": "#00C853",
+                        "background-dark": "#0B0E11",
+                        "background-card": "#15191E",
+                        "surface-glass": "rgba(255, 255, 255, 0.03)",
+                        "surface-border": "rgba(255, 255, 255, 0.08)"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0B0E11;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .glass-card {
+            background: rgba(21, 25, 30, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-header {
+            background: rgba(11, 14, 17, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-dark text-slate-300 font-display antialiased selection:bg-primary selection:text-white overflow-x-hidden">
+    <!-- Top Navigation -->
+    <header class="fixed top-0 w-full z-50 glass-header transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div
+                    class="relative w-8 h-8 flex items-center justify-center bg-gradient-to-br from-primary to-orange-600 rounded-lg shadow-lg shadow-orange-900/20">
+                    <span class="material-symbols-outlined text-white text-xl">anchor</span>
+                </div>
+                <h1 class="text-white text-xl font-bold tracking-tight">HarborMind</h1>
+            </div>
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                    href="#features">Features</a>
+                <a class="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                    href="#solutions">Solutions</a>
+                <a class="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                    href="#impact">Impact</a>
+                <a class="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#about">About</a>
+            </nav>
+            <!-- CTA -->
+            <div class="hidden md:flex items-center gap-4">
+                <a class="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="/login">Login</a>
+                <button
+                    class="bg-primary hover:bg-primary-dark text-white text-sm font-semibold py-2.5 px-5 rounded-lg transition-all duration-300 shadow-lg shadow-primary/20"
+                    onclick="window.location.href='/login'">
+                    Get Started
+                </button>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+    <main class="relative pt-20">
+        <!-- Background Effects -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/10 rounded-full blur-[120px] -z-10 pointer-events-none">
+        </div>
+        <div
+            class="absolute top-[20%] right-0 w-[600px] h-[600px] bg-accent-green/5 rounded-full blur-[120px] -z-10 pointer-events-none">
+        </div>
+        <!-- Hero Section -->
+        <section class="relative px-6 py-20 lg:py-32 overflow-hidden">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Hero Content -->
+                <div class="flex flex-col gap-6 max-w-2xl z-10">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 w-fit">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-green opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-green"></span>
+                        </span>
+                        <span class="text-xs font-medium text-slate-300 uppercase tracking-wide">Live Port Data
+                            Integration</span>
+                    </div>
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-white">
+                        Predict. <br />
+                        Optimize. <br />
+                        <span class="text-primary">Sustain.</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 max-w-lg leading-relaxed">
+                        The AI-powered operating system for modern port logistics. Eliminate congestion, reduce idle
+                        times, and track ESG metrics in real-time.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <button
+                            class="bg-primary hover:bg-primary-dark text-white text-base font-semibold py-3.5 px-8 rounded-lg transition-all duration-300 shadow-xl shadow-primary/20 flex items-center gap-2"
+                            onclick="window.location.href='/login'">
+                            <span>Get Started</span>
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </button>
+                        <button
+                            class="bg-white/5 hover:bg-white/10 border border-white/10 text-white text-base font-semibold py-3.5 px-8 rounded-lg transition-all duration-300 flex items-center gap-2 backdrop-blur-sm"
+                            onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+                            <span class="material-symbols-outlined text-lg">play_circle</span>
+                            <span>View Demo</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-4 pt-8 text-sm text-slate-500">
+                        <div class="flex -space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-700 border-2 border-background-dark"></div>
+                            <div class="w-8 h-8 rounded-full bg-slate-600 border-2 border-background-dark"></div>
+                            <div class="w-8 h-8 rounded-full bg-slate-500 border-2 border-background-dark"></div>
+                        </div>
+                        <p>Trusted by 15+ major terminals worldwide</p>
+                    </div>
+                </div>
+                <!-- Hero Visual / Dashboard Preview -->
+                <div class="relative lg:h-[600px] w-full flex items-center justify-center">
+                    <div
+                        class="relative w-full aspect-[4/3] glass-card rounded-2xl p-4 border border-white/10 shadow-2xl overflow-hidden group">
+                        <!-- Decorative Abstract Map Background -->
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=2072&amp;auto=format&amp;fit=crop')] bg-cover bg-center opacity-30 mix-blend-overlay"
+                            data-alt="Abstract digital world map background representing global logistics"></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent">
+                        </div>
+                        <!-- Floating UI Elements -->
+                        <div class="relative h-full w-full flex flex-col justify-between z-10">
+                            <!-- Top Bar Mockup -->
+                            <div class="flex justify-between items-center mb-8">
+                                <div class="px-3 py-1 bg-black/40 rounded-md border border-white/10 backdrop-blur-md">
+                                    <span class="text-xs text-accent-green font-mono">● SYSTEM ACTIVE</span>
+                                </div>
+                                <div class="px-3 py-1 bg-black/40 rounded-md border border-white/10 backdrop-blur-md">
+                                    <span class="text-xs text-slate-400 font-mono">UTC 14:32:01</span>
+                                </div>
+                            </div>
+                            <!-- Center Graphic -->
+                            <div
+                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-primary/20 rounded-full flex items-center justify-center animate-[spin_10s_linear_infinite]">
+                                <div class="w-48 h-48 border border-primary/40 rounded-full border-dashed"></div>
+                            </div>
+                            <!-- Floating Card 1 -->
+                            <div
+                                class="absolute top-20 right-8 bg-black/60 backdrop-blur-md border border-white/10 p-4 rounded-lg w-48 animate-pulse">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs text-slate-400">Gate A Efficiency</span>
+                                    <span class="material-symbols-outlined text-accent-green text-sm">trending_up</span>
+                                </div>
+                                <div class="text-2xl font-bold text-white">94.2%</div>
+                                <div class="w-full bg-white/10 h-1 mt-2 rounded-full overflow-hidden">
+                                    <div class="bg-accent-green h-full w-[94%]"></div>
+                                </div>
+                            </div>
+                            <!-- Floating Card 2 -->
+                            <div
+                                class="absolute bottom-12 left-8 bg-black/60 backdrop-blur-md border border-white/10 p-4 rounded-lg w-56 transform transition-transform hover:scale-105">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="bg-primary/20 p-1.5 rounded text-primary">
+                                        <span class="material-symbols-outlined text-sm">local_shipping</span>
+                                    </div>
+                                    <span class="text-xs text-slate-300">Incoming Traffic</span>
+                                </div>
+                                <div class="flex justify-between items-end">
+                                    <div>
+                                        <div class="text-xl font-bold text-white">1,240</div>
+                                        <div class="text-[10px] text-slate-400">Trucks / Hour</div>
+                                    </div>
+                                    <span class="text-xs text-primary font-medium">+12% vs Avg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Stats / Problem Statement -->
+        <section class="py-20 bg-background-card/50 border-y border-white/5" id="impact">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">The Cost of Congestion</h2>
+                        <p class="text-slate-400 leading-relaxed">
+                            Inefficient gate operations aren't just annoying—they cost terminals millions in wasted
+                            fuel, penalties, and lost time. HarborMind solves this with precision AI.
+                        </p>
+                    </div>
+                    <div class="flex justify-end">
+                        <button
+                            class="text-primary hover:text-white font-medium flex items-center gap-2 transition-colors"
+                            onclick="window.location.href='/esg'">
+                            View ESG Dashboard <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Stat 1 -->
+                    <div class="glass-card p-6 rounded-xl hover:bg-white/5 transition-colors group">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-orange-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-2xl">local_gas_station</span>
+                        </div>
+                        <h3 class="text-4xl font-bold text-white mb-1">40%</h3>
+                        <p class="text-slate-400 text-sm">Reduction in fuel idling waste</p>
+                    </div>
+                    <!-- Stat 2 -->
+                    <div class="glass-card p-6 rounded-xl hover:bg-white/5 transition-colors group">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-blue-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-blue-400 text-2xl">schedule</span>
+                        </div>
+                        <h3 class="text-4xl font-bold text-white mb-1">25m</h3>
+                        <p class="text-slate-400 text-sm">Saved per truck turn-time</p>
+                    </div>
+                    <!-- Stat 3 -->
+                    <div
+                        class="glass-card p-6 rounded-xl hover:bg-white/5 transition-colors group border-t-2 border-t-accent-green/50">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-green-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-accent-green text-2xl">co2</span>
+                        </div>
+                        <h3 class="text-4xl font-bold text-white mb-1">12k</h3>
+                        <p class="text-slate-400 text-sm">Tons of CO2 eliminated annually</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Core Features -->
+        <section class="py-24 relative overflow-hidden" id="features">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-20">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Intelligence at Every Gate</h2>
+                    <p class="text-slate-400 text-lg">A complete operating system built to handle the complexities of
+                        modern logistics with predictive power.</p>
+                </div>
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Feature 1: AI Prediction -->
+                    <div
+                        class="group glass-card rounded-2xl p-1 overflow-hidden hover:border-primary/50 transition-colors duration-300">
+                        <div class="bg-background-dark/50 rounded-xl overflow-hidden h-full flex flex-col">
+                            <div
+                                class="h-48 bg-gradient-to-b from-gray-800 to-background-dark relative overflow-hidden">
+                                <div class="absolute inset-0 opacity-50 bg-[url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=2070&amp;auto=format&amp;fit=crop')] bg-cover bg-center"
+                                    data-alt="Data analytics dashboard showing graphs and charts on a dark screen">
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-background-dark to-transparent">
+                                </div>
+                                <div class="absolute bottom-4 left-6 right-6">
+                                    <div class="flex items-end gap-1 h-12 w-full justify-between px-2">
+                                        <div class="w-1/6 bg-primary/20 h-[40%] rounded-t-sm"></div>
+                                        <div class="w-1/6 bg-primary/40 h-[60%] rounded-t-sm"></div>
+                                        <div class="w-1/6 bg-primary/60 h-[30%] rounded-t-sm"></div>
+                                        <div
+                                            class="w-1/6 bg-primary h-[85%] rounded-t-sm shadow-[0_0_10px_rgba(199,116,0,0.5)]">
+                                        </div>
+                                        <div class="w-1/6 bg-primary/50 h-[50%] rounded-t-sm"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-8 flex-1 flex flex-col">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-4 text-primary">
+                                    <span class="material-symbols-outlined">model_training</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-3">AI Prediction Engine</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                                    Forecast congestion up to 24 hours in advance. Our machine learning models analyze
+                                    historical data, weather, and vessel schedules.
+                                </p>
+                                <a class="mt-auto text-primary text-sm font-medium hover:text-white transition-colors flex items-center gap-1"
+                                    href="/admin">
+                                    View Live Dashboard <span
+                                        class="material-symbols-outlined text-sm">chevron_right</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 2: Smart Booking -->
+                    <div
+                        class="group glass-card rounded-2xl p-1 overflow-hidden hover:border-primary/50 transition-colors duration-300">
+                        <div class="bg-background-dark/50 rounded-xl overflow-hidden h-full flex flex-col">
+                            <div class="h-48 bg-gradient-to-b from-gray-800 to-background-dark relative">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&amp;w=2070&amp;auto=format&amp;fit=crop')] bg-cover bg-center"
+                                    data-alt="Warehouse logistics and shipping containers stacked in a yard"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-background-dark to-transparent">
+                                </div>
+                                <!-- Mock UI for calendar -->
+                                <div
+                                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 bg-black/80 backdrop-blur rounded-lg border border-white/10 p-3">
+                                    <div class="flex gap-2 mb-2">
+                                        <div class="h-2 w-2 rounded-full bg-red-500"></div>
+                                        <div class="h-2 w-2 rounded-full bg-yellow-500"></div>
+                                        <div class="h-2 w-2 rounded-full bg-green-500"></div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="h-2 w-3/4 bg-white/10 rounded"></div>
+                                        <div class="h-2 w-1/2 bg-white/10 rounded"></div>
+                                        <div
+                                            class="h-6 w-full bg-primary/20 border border-primary/40 rounded mt-2 flex items-center justify-center">
+                                            <span class="text-[10px] text-primary">Slot Confirmed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-8 flex-1 flex flex-col">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-4 text-blue-400">
+                                    <span class="material-symbols-outlined">calendar_month</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-3">Smart Booking System</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                                    Automated slot management that dynamically adjusts based on terminal capacity,
+                                    smoothing out peak traffic hours automatically.
+                                </p>
+                                <a class="mt-auto text-primary text-sm font-medium hover:text-white transition-colors flex items-center gap-1"
+                                    href="/booking">
+                                    Try Booking System <span
+                                        class="material-symbols-outlined text-sm">chevron_right</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 3: ESG Tracking (Green Accent) -->
+                    <div
+                        class="group glass-card rounded-2xl p-1 overflow-hidden border-accent-green/30 hover:border-accent-green transition-colors duration-300 shadow-[0_0_30px_rgba(0,200,83,0.05)]">
+                        <div class="bg-background-dark/50 rounded-xl overflow-hidden h-full flex flex-col">
+                            <div class="h-48 bg-gradient-to-b from-green-900/20 to-background-dark relative">
+                                <div class="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&amp;w=2026&amp;auto=format&amp;fit=crop')] bg-cover bg-center"
+                                    data-alt="Green leaves pattern representing sustainability and nature"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-background-dark to-transparent">
+                                </div>
+                                <div class="absolute bottom-6 left-6 flex items-center gap-3">
+                                    <div
+                                        class="h-12 w-12 rounded-full border-4 border-accent-green/30 border-t-accent-green flex items-center justify-center bg-black/50 backdrop-blur">
+                                        <span class="text-[10px] text-white font-bold">-12%</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-slate-300">Emission Rate</div>
+                                        <div class="text-sm font-bold text-accent-green">Target Met</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-8 flex-1 flex flex-col">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-accent-green/10 flex items-center justify-center mb-4 text-accent-green">
+                                    <span class="material-symbols-outlined">eco</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-3">ESG &amp; Sustainability</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                                    Real-time carbon footprint monitoring. Generate compliance reports instantly and
+                                    visualize your environmental impact reduction.
+                                </p>
+                                <a class="mt-auto text-accent-green text-sm font-medium hover:text-white transition-colors flex items-center gap-1"
+                                    href="/esg">
+                                    View ESG Metrics <span
+                                        class="material-symbols-outlined text-sm">chevron_right</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CTA Section -->
+        <section class="py-20 px-6">
+            <div class="max-w-5xl mx-auto glass-card rounded-2xl p-12 relative overflow-hidden text-center">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -z-10"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-accent-green/10 rounded-full blur-[80px] -z-10"></div>
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Ready to Optimize Your Terminal?</h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-10">
+                    Join the future of port logistics today. Reduce costs, improve efficiency, and meet sustainability
+                    goals with HarborMind.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button
+                        class="bg-primary hover:bg-primary-dark text-white text-lg font-bold py-4 px-10 rounded-lg transition-all duration-300 shadow-xl shadow-primary/20"
+                        onclick="window.location.href='/login'">
+                        Get Started Now
+                    </button>
+                    <button
+                        class="bg-transparent hover:bg-white/5 border border-white/20 text-white text-lg font-bold py-4 px-10 rounded-lg transition-all duration-300"
+                        onclick="window.location.href='mailto:contact@harbormind.com'">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-[#080a0c] border-t border-white/5 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="material-symbols-outlined text-primary text-2xl">anchor</span>
+                        <h2 class="text-white text-lg font-bold">HarborMind</h2>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        Empowering ports worldwide with AI-driven insights for a smarter, greener supply chain.
+                    </p>
+                    <div class="flex gap-4">
+                        <a class="text-slate-500 hover:text-white transition-colors" href="#"><span
+                                class="sr-only">Twitter</span><svg class="w-5 h-5" fill="currentColor"
+                                viewbox="0 0 24 24">
+                                <path
+                                    d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84">
+                                </path>
+                            </svg></a>
+                        <a class="text-slate-500 hover:text-white transition-colors" href="#"><span
+                                class="sr-only">LinkedIn</span><svg class="w-5 h-5" fill="currentColor"
+                                viewbox="0 0 24 24">
+                                <path
+                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z">
+                                </path>
+                            </svg></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-6">Product</h3>
+                    <ul class="space-y-4 text-sm text-slate-500">
+                        <li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Solutions</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Pricing</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Integrations</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-6">Company</h3>
+                    <ul class="space-y-4 text-sm text-slate-500">
+                        <li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-6">Stay Updated</h3>
+                    <p class="text-xs text-slate-500 mb-4">Subscribe to our newsletter for the latest in port logistics.
+                    </p>
+                    <form class="flex gap-2">
+                        <input
+                            class="bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-primary w-full"
+                            placeholder="Enter email" type="email" />
+                        <button
+                            class="bg-primary hover:bg-primary-dark text-white px-3 py-2 rounded text-sm font-medium transition-colors">
+                            <span class="material-symbols-outlined text-sm">send</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div
+                class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+                <p>© 2023 HarborMind Inc. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a class="hover:text-slate-400" href="#">Privacy Policy</a>
+                    <a class="hover:text-slate-400" href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
