@@ -7,7 +7,7 @@ import os
 app = FastAPI(title="PortBuoy Backend")
 
 # Setup templates directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "frontend", "templates"))
 
 @app.get("/", response_class=HTMLResponse)
