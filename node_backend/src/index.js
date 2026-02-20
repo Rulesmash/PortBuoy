@@ -1,0 +1,55 @@
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
+// Load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(morgan('dev'));
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Database connection
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portbuoy');
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.error(`Error connecting to MongoDB: ${error.message}`);
+        process.exit(1);
+        // Mount routes
+        app.use('/api/auth', authRoutes);
+        app.use('/api/trucks', truckRoutes);
+        app.use('/api/slots', slotRoutes);
+        app.use('/api/admin', adminRoutes);
+        app.use('/api/notifications', notificationRoutes);
+
+        app.get('/api/health', (req, res) => {
+            res.status(200).json({ status: 'ok', message: 'PortBuoy API is running' });
+        });
+
+        // Start server
+        const startServer = async () => {
+            await connectDB();
+            app.listen(PORT, () => {
+                console.log(`Server running on port ${PORT}`);
+                console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+            });
+        };
+
+        if (require.main === module) {
+            startServer();
+        }
+
+        module.exports = app;
