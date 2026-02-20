@@ -504,83 +504,106 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Bottom Grid (Secondary Data) -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-base font-bold text-white">Processing Efficiency by Lane</h3>
-                                <button class="text-primary hover:text-white transition-colors">
-                                    <span class="material-symbols-outlined">more_horiz</span>
+                    <!-- Driver Management Grid -->
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="bg-surface-dark border border-border-dark rounded-xl pt-6 px-6 pb-2">
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="text-lg font-bold text-white">Driver Pass Directory</h3>
+                                    <p class="text-xs text-slate-400">Manage gate credentials and statuses for drivers
+                                    </p>
+                                </div>
+                                <button
+                                    class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all">
+                                    <span class="material-symbols-outlined text-[18px]">add</span>
+                                    <span>Add Driver</span>
                                 </button>
                             </div>
-                            <div class="space-y-4">
-                                <!-- Lane 1 -->
-                                <div class="flex items-center gap-4">
-                                    <div class="w-16 text-xs text-slate-400 font-mono">LANE A1</div>
-                                    <div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden">
-                                        <div class="bg-primary h-full rounded-full" style="width: 92%"></div>
-                                    </div>
-                                    <div class="w-10 text-right text-xs font-bold text-white">92%</div>
-                                </div>
-                                <!-- Lane 2 -->
-                                <div class="flex items-center gap-4">
-                                    <div class="w-16 text-xs text-slate-400 font-mono">LANE A2</div>
-                                    <div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden">
-                                        <div class="bg-green-500 h-full rounded-full" style="width: 85%"></div>
-                                    </div>
-                                    <div class="w-10 text-right text-xs font-bold text-white">85%</div>
-                                </div>
-                                <!-- Lane 3 -->
-                                <div class="flex items-center gap-4">
-                                    <div class="w-16 text-xs text-slate-400 font-mono">LANE B1</div>
-                                    <div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden">
-                                        <div class="bg-yellow-500 h-full rounded-full" style="width: 64%"></div>
-                                    </div>
-                                    <div class="w-10 text-right text-xs font-bold text-white">64%</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-surface-dark border border-border-dark rounded-xl p-6 relative overflow-hidden">
-                            <div class="absolute inset-0 z-0">
-                                <!-- Decorative Map Background Placeholder -->
-                                <div class="w-full h-full bg-slate-800/30 bg-cover bg-center grayscale opacity-20"
-                                    data-alt="Abstract satellite map view of a port terminal"
-                                    data-location="Port Terminal"
-                                    style="background-image: url('https://placeholder.pics/svg/300');"></div>
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/80 to-transparent">
-                                </div>
-                            </div>
-                            <div class="relative z-10 h-full flex flex-col justify-between">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h3 class="text-base font-bold text-white">Active Zones</h3>
-                                        <p class="text-xs text-slate-400">Security &amp; Sensor Status</p>
-                                    </div>
-                                    <span
-                                        class="bg-green-500/20 text-green-400 text-[10px] font-bold px-2 py-1 rounded border border-green-500/30 uppercase">All
-                                        Systems Normal</span>
-                                </div>
-                                <div class="flex gap-4 mt-6">
-                                    <div
-                                        class="flex-1 bg-background-dark/80 backdrop-blur border border-border-dark p-3 rounded-lg text-center">
-                                        <div class="text-2xl font-bold text-white">24</div>
-                                        <div class="text-[10px] text-slate-400 uppercase tracking-wide">Cranes Active
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex-1 bg-background-dark/80 backdrop-blur border border-border-dark p-3 rounded-lg text-center">
-                                        <div class="text-2xl font-bold text-white">112</div>
-                                        <div class="text-[10px] text-slate-400 uppercase tracking-wide">Cameras Online
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex-1 bg-background-dark/80 backdrop-blur border border-border-dark p-3 rounded-lg text-center">
-                                        <div class="text-2xl font-bold text-white">8</div>
-                                        <div class="text-[10px] text-slate-400 uppercase tracking-wide">Patrol Units
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Drivers Table -->
+                            <div class="overflow-x-auto pb-4">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr
+                                            class="border-b border-border-dark text-slate-400 text-xs uppercase tracking-wider">
+                                            <th class="py-3 px-4 font-semibold">Driver Name</th>
+                                            <th class="py-3 px-4 font-semibold">Vehicle ID</th>
+                                            <th class="py-3 px-4 font-semibold">Last Entry Gate</th>
+                                            <th class="py-3 px-4 font-semibold">Pass Status</th>
+                                            <th class="py-3 px-4 font-semibold text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm">
+                                        <tr class="border-b border-border-dark hover:bg-slate-800/30 transition-colors">
+                                            <td class="py-4 px-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                                        MR</div>
+                                                    <span class="text-white font-medium">Michael R.</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-4 text-slate-300 font-mono">TRK-9021</td>
+                                            <td class="py-4 px-4 text-slate-300">Gate 4</td>
+                                            <td class="py-4 px-4">
+                                                <span
+                                                    class="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded inline-flex items-center gap-1">
+                                                    <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                                                    Active Pass
+                                                </span>
+                                            </td>
+                                            <td class="py-4 px-4 text-right">
+                                                <button class="text-slate-400 hover:text-white transition-colors"><span
+                                                        class="material-symbols-outlined text-[18px]">more_vert</span></button>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b border-border-dark hover:bg-slate-800/30 transition-colors">
+                                            <td class="py-4 px-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold">
+                                                        SJ</div>
+                                                    <span class="text-white font-medium">Sarah Jenkins</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-4 text-slate-300 font-mono">TRK-2104</td>
+                                            <td class="py-4 px-4 text-slate-300">Gate 1</td>
+                                            <td class="py-4 px-4">
+                                                <span
+                                                    class="text-xs font-bold text-red-500 bg-red-500/10 px-2 py-1 rounded inline-flex items-center gap-1">
+                                                    <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                                                    Revoked
+                                                </span>
+                                            </td>
+                                            <td class="py-4 px-4 text-right">
+                                                <button class="text-slate-400 hover:text-white transition-colors"><span
+                                                        class="material-symbols-outlined text-[18px]">more_vert</span></button>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b border-border-dark hover:bg-slate-800/30 transition-colors">
+                                            <td class="py-4 px-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 font-bold">
+                                                        dt</div>
+                                                    <span class="text-white font-medium">David T.</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-4 text-slate-300 font-mono">TRK-8822</td>
+                                            <td class="py-4 px-4 text-slate-300">—</td>
+                                            <td class="py-4 px-4">
+                                                <span
+                                                    class="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-1 rounded inline-flex items-center gap-1">
+                                                    <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+                                                    No Pass
+                                                </span>
+                                            </td>
+                                            <td class="py-4 px-4 text-right">
+                                                <button class="text-slate-400 hover:text-white transition-colors"><span
+                                                        class="material-symbols-outlined text-[18px]">more_vert</span></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

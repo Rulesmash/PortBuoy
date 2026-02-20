@@ -1,6 +1,6 @@
-# HarborMind - AI Port Logistics
+# PortBuoy - AI Port Logistics
 
-HarborMind is the AI-powered operating system for modern port logistics. It aims to eliminate congestion, reduce idle times, and track ESG (Environmental, Social, and Governance) metrics in real-time.
+PortBuoy is the AI-powered operating system for modern port logistics. It aims to eliminate congestion, reduce idle times, and track ESG (Environmental, Social, and Governance) metrics in real-time.
 
 ## Features
 

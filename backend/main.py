@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import os
 
-app = FastAPI(title="Smart Green Gate Backend")
+app = FastAPI(title="PortBuoy Backend")
 
 # Setup templates directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
