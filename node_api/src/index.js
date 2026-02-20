@@ -21,36 +21,17 @@ app.use(morgan('dev'));
 // Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Database connection with fallback to Memory Server
+// Database connection
 const connectDB = async () => {
     const defaultUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/portbuoy';
 
     try {
-        console.log(`Attempting to connect to MongoDB at ${defaultUri}...`);
-        // We set a short timeout here to quickly fallback if MongoDB is not locally running
-        const conn = await mongoose.connect(defaultUri, {
-            serverSelectionTimeoutMS: 2000
-        });
-        console.log(`✅ Default MongoDB Connected: ${conn.connection.host}`);
+        console.log(`Attempting to connect to MongoDB...`);
+        const conn = await mongoose.connect(defaultUri);
+        console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
-        console.warn(`\n⚠️  Failed to connect to local MongoDB. Falling back to In-Memory MongoDB Server for MVP testing...`);
-        try {
-            const { MongoMemoryServer } = require('mongodb-memory-server');
-            const mongoServer = await MongoMemoryServer.create();
-            const memoryUri = mongoServer.getUri();
-
-            const conn = await mongoose.connect(memoryUri);
-            console.log(`✅ In-Memory MongoDB Connected: ${conn.connection.host}`);
-
-            // Automatically run the seeder so the in-memory database has data!
-            console.log(`🌱 Seeding In-Memory Database with sample MVP data...`);
-            await seedData(false); // pass false so process doesn't exit
-            console.log(`🌱 Seed completion successful.`);
-
-        } catch (memError) {
-            console.error(`❌ Fatal Error connecting to In-Memory MongoDB: ${memError.message}`);
-            process.exit(1);
-        }
+        console.error(`❌ Fatal Error connecting to MongoDB: ${error.message}`);
+        process.exit(1);
     }
 };
 
